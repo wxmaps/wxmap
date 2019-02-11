@@ -14,3 +14,6 @@ https://www.aviationweather.gov/adds/dataserver_current/httpparam?dataSource=met
 
 # Configurability
 Ideally, this project will allow the configuration of any US-based IATA code. This is beneficial because users will be able to choose any FAA VFR sectional map and place their LEDs in custom locations, even aside from Class C/B. 
+
+# config.json
+config.json is a default configuration file for the NEUS map. Should the web interface be unconfigured, this will be the fallback option. The current schema for this JSON object is simply 'LEDnum': 'IATA code'.
