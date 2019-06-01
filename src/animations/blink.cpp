@@ -21,11 +21,11 @@ void Blink::render(wxData_t data, float_t progress)
 
     if (progress >= 0.5)
     {
-        strip->ClearTo(RgbColor(255, 255, 255));
+        strip->ClearTo(25);
     }
     else
     {
-        strip->ClearTo(RgbColor(0, 0, 0));
+        strip->ClearTo(0);
     }
 
     strip->Show();

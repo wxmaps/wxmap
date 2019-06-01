@@ -1,6 +1,7 @@
 #include <NeoPixelBus.h>
 #include "animationController.h"
 #include "animations/blink.h"
+#include "animations/ceiling.h"
 #include "ArduinoJson.h"
 
 AnimationController::AnimationController(uint16_t pixelCountIn, bool gammaSetting)
@@ -23,7 +24,7 @@ AnimationController::AnimationController(uint16_t pixelCountIn, bool gammaSettin
 
 void AnimationController::PixelCountChanged(uint16_t pixelCount)
 {
-    Serial.print(F("AnimationController::PixelCountChanged(...): pixelcount is"));
+    Serial.print(F("AnimationController::PixelCountCh4anged(...): pixelcount is"));
     Serial.println(pixelCount);
     if (strip != NULL)
     {
@@ -35,7 +36,7 @@ void AnimationController::PixelCountChanged(uint16_t pixelCount)
     Serial.println(F("AnimationController::PixelCountChanged(...): begin strip"));
     //TODO: debug
     strip->Begin();
-    strip->ClearTo(255);
+    strip->ClearTo(1);
     strip->Show();
     delay(100);
 }
@@ -68,6 +69,12 @@ Animation *AnimationController::animationFactory(int animationIndex, JsonObject 
     case 0:
     {
         return new Blink(cfg, strip);
+        break;
+    }
+    //ceil
+    case 1:
+    {
+        return new Ceiling(cfg, strip);
         break;
     }
     }

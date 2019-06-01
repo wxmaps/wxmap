@@ -14,6 +14,8 @@ typedef struct
     /* Strip config */
     uint16_t pixelCount;
     bool gamma; /* Use gamma map? */
+
+    std::array<String, 40> leds;
 } config_t;
 
 std::map<int, String> targets;

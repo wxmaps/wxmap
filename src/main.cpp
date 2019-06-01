@@ -3,14 +3,15 @@ wxmap. open for all.
 made on vacation in Seattle, WA during the 2019 snowpocalypse.
 also made at home after.
 */
+
+#define CONFIG_FILE "/config.json"
+#define COLOR_SATURATION 128
+
 #include <NeoPixelBus.h>
 #include "main.h"
 #include "ESP8266WiFi.h"
 #include "animationController.h"
 #include "FS.h"
-
-#define CONFIG_FILE "/config.json"
-#define COLOR_SATURATION 128
 
 config_t config; // Current configuration
 AnimationController *animCtrl;
@@ -28,6 +29,18 @@ void dsConfig(JsonObject &json)
     config.passphrase = json["passphrase"].as<String>();
     config.gamma = json["gamma"];
     config.pixelCount = json["pixelCount"];
+    int i = 0;
+    for (auto value : json["leds"].as<JsonArray>())
+    {
+        config.leds[i] = value.as<String>();
+        i++;
+    }
+    Serial.print("Configured airports:");
+    for (const auto &s : config.leds){
+        Serial.print(s);
+        Serial.print(" ");
+    }
+    Serial.print("\n");
 }
 
 // Load configugration JSON file
