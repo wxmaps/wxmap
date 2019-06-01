@@ -4,6 +4,7 @@ made on vacation in Seattle, WA during the 2019 snowpocalypse.
 */
 
 #include <NeoPixelBus.h>
+#include "ESP8266WiFi.h"
 #include "main.h"
 #include "FS.h"
 
@@ -14,7 +15,7 @@ config_t config;
 void dsConfig(JsonObject &json) {
     config.hostname = json["hostname"].as<String>();
     if(!config.hostname.length()) {
-        config.hostname = "wxmap" + ESP.getChipId());
+        config.hostname = "wxmap" + ESP.getChipId();
     }
 
     config.ssid = json["ssid"].as<String>();
@@ -72,4 +73,8 @@ void setup() {
     Serial.println(F("[i] Set hostname."));
     WiFi.hostname(config.hostname);
     Serial.println(F("[i] Init WXMap"));   
+}
+
+void loop(){
+    
 }
