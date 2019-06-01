@@ -35,7 +35,7 @@ void dsConfig(JsonObject &json)
         config.leds[i] = value.as<String>();
         i++;
     }
-    Serial.print("Configured airports:");
+    Serial.print("Configured airports: ");
     for (const auto &s : config.leds){
         Serial.print(s);
         Serial.print(" ");
@@ -55,7 +55,7 @@ void loadConfig()
     File file = SPIFFS.open(CONFIG_FILE, "r");
     if (!file)
     {
-        Serial.println(F("- No configuration file found."));
+        Serial.println(F("! No configuration file found."));
         char chipId[7] = {0};
         snprintf(chipId, sizeof(chipId), "%06x", ESP.getChipId());
         config.ssid = "wxmap" + String(chipId);
@@ -71,7 +71,7 @@ void loadConfig()
         size_t size = file.size();
         if (size > 2048)
         {
-            Serial.println(F("*** Configuration File too large ***"));
+            Serial.println(F("! Configuration File too large"));
             return;
         }
 
@@ -82,13 +82,13 @@ void loadConfig()
         JsonObject &json = jsonBuffer.parseObject(buf.get());
         if (!json.success())
         {
-            Serial.println(F("*** Configuration File Format Error ***"));
+            Serial.println(F("! Configuration File Format Error"));
             return;
         }
 
         dsConfig(json);
 
-        Serial.println(F("- Configuration loaded."));
+        Serial.println(F("+ Configuration loaded."));
     }
 
     // Validate it
@@ -109,6 +109,8 @@ void serializeConfig(String &jsonString, bool pretty)
     json["pixelCount"] = static_cast<uint8_t>(config.pixelCount);
     json["gamma"] = config.gamma;
 
+    //ToDo: Serialize airports
+
     if (pretty)
         json.prettyPrintTo(jsonString);
     else
@@ -126,7 +128,7 @@ void saveConfig()
     File file = SPIFFS.open(CONFIG_FILE, "w");
     if (!file)
     {
-        Serial.println(F("*** Error creating configuration file ***"));
+        Serial.println(F("!Error creating configuration file"));
         return;
     }
     else
@@ -142,18 +144,18 @@ void setup()
     while (!Serial)
         ;
 
-    Serial.println(F("* Open FS."));
+    Serial.println(F("+ FS"));
     if (!SPIFFS.begin())
     {
         Serial.println(F("* Format FS..."));
         SPIFFS.format();
         SPIFFS.begin();
     }
-    Serial.println(F("* Load config."));
+    Serial.println(F("+ Config"));
     loadConfig();
-    Serial.println(F("* Set hostname."));
+    Serial.println(F("+ Hostname"));
     WiFi.hostname(config.hostname);
-    Serial.println(F("* Init AnimationController"));
+    Serial.println(F("+ AnimationController"));
     animCtrl = new AnimationController(config.pixelCount, config.gamma);
 }
 

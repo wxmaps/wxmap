@@ -16,7 +16,7 @@ uint32_t Blink::getDuration()
     return animationConfig.duration;
 }
 
-void Blink::render(wxData_t data, float_t progress)
+void Blink::render(wxData_t *data, float_t progress)
 {
 
     if (progress >= 0.5)

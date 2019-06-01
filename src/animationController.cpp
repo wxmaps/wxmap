@@ -6,6 +6,8 @@
 
 AnimationController::AnimationController(uint16_t pixelCountIn, bool gammaSetting)
 {
+    wxData = new wxData_t{};
+    wxData->Ceiling[0] = 255;
     Serial.println(F("AnimationController::AnimationController(...): Call"));
     gamma = gammaSetting;
     Serial.println(F("AnimationController::AnimationController(...): init strip"));
@@ -17,7 +19,7 @@ AnimationController::AnimationController(uint16_t pixelCountIn, bool gammaSettin
     root["duration"] = 1000;
 
     Serial.println(F("AnimationController::AnimationController(...): init blink"));
-    queue(new Blink(root, strip));
+    queue(new Ceiling(root, strip));
     cut();
     //currentAnimation = new Blink(root, strip);
 }
@@ -44,7 +46,7 @@ void AnimationController::PixelCountChanged(uint16_t pixelCount)
 void AnimationController::update()
 {
     float_t animProg = (millis() % currentAnimation->getDuration()) / (float_t)currentAnimation->getDuration();
-    currentAnimation->render(wxData_t{}, animProg);
+    currentAnimation->render(wxData, animProg);
 }
 
 void AnimationController::queue(Animation *newAnimation)

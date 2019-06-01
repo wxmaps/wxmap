@@ -17,6 +17,7 @@ public:
 private:
     bool gamma;
     NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> *strip = NULL;
+    wxData_t *wxData = NULL;
     void PixelCountChanged(uint16_t pixelCount);
     Animation *currentAnimation;
     Animation *nextAnimation;

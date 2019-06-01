@@ -24,6 +24,6 @@ private:
     NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> *strip;
 
     uint32_t getDuration();
-    void render(wxData_t data, float_t progress);
+    void render(wxData_t *data, float_t progress);
 };
 #endif
