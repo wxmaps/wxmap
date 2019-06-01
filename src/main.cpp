@@ -13,6 +13,7 @@ also made at home after.
 #define COLOR_SATURATION 128
 
 config_t config; // Current configuration
+AnimationController *animCtrl;
 
 // Configuration
 

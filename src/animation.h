@@ -2,6 +2,11 @@
 #define animation_h
 #include <Arduino.h>
 
+/* Data structure */
+typedef struct
+{
+} wxData_t;
+
 class Animation
 {
 public:
@@ -9,9 +14,7 @@ public:
     //virtual void dsState(JsonObject config);
     virtual uint32_t getDuration();
 };
-#endif
 
-/* Data structure */
-typedef struct
-{
-} wxData_t;
+
+
+#endif
