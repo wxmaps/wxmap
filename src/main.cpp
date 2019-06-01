@@ -1,14 +1,16 @@
 /*
 wxmap. open for all.
 made on vacation in Seattle, WA during the 2019 snowpocalypse.
-also made at ajvpot's house after.
+also made at home after.
 */
 #include <NeoPixelBus.h>
 #include "main.h"
 #include "ESP8266WiFi.h"
+#include "animationController.h"
 #include "FS.h"
 
 #define CONFIG_FILE "/config.json"
+#define COLOR_SATURATION 128
 
 config_t config; // Current configuration
 
@@ -137,9 +139,11 @@ void setup()
     loadConfig();
     Serial.println(F("* Set hostname."));
     WiFi.hostname(config.hostname);
+    Serial.println(F("* Init AnimationController"));
+    animCtrl = new AnimationController(config.pixelCount, config.gamma);
 }
 
 void loop()
 {
-    //TODO: animation update
+    animCtrl->update();
 }
