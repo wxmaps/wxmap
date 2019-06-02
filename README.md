@@ -5,7 +5,9 @@ what's poppin' in my airspace? arduino map to display wx for the US
 - [x] Set up config.json file to map an LED id to an IATA code
 - [x] In firmware, pull config.json to map to LEDs
 - [x] Pull + store METAR every 5mins for all configured
-- [ ] Configure mode selector (Sky Condition, Temperature, Wind, Vis, Ceiling)
+- [x] Implement single display mode
+- [ ] Extend display modes for all attributes (Sky Condition, Temperature, Wind, Vis, Ceiling)
+- [ ] Mode selection interface (encoder, web ui as well?)
 - [ ] Set up Web UI for configuring LED/IATA mapping
 
 # Data Source

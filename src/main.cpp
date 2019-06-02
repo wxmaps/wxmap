@@ -30,6 +30,7 @@ void dsConfig(JsonObject &json)
     config.passphrase = json["passphrase"].as<String>();
     config.gamma = json["gamma"];
     config.pixelCount = json["pixelCount"];
+    config.metarServer = json["metarServer"].as<String>();
     int i = 0;
     for (auto value : json["leds"].as<JsonArray>())
     {
@@ -106,6 +107,7 @@ void serializeConfig(String &jsonString, bool pretty)
     json["ssid"] = config.ssid.c_str();
     json["passphrase"] = config.passphrase.c_str();
     json["hostname"] = config.hostname.c_str();
+    json["metarServer"] = config.metarServer.c_str();
 
     json["pixelCount"] = static_cast<uint8_t>(config.pixelCount);
     json["gamma"] = config.gamma;
