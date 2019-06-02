@@ -3,18 +3,6 @@
 #include <ArduinoJson.h>
 #include <map>
 
-/* Configuration structure */
-typedef struct
-{
-    /* Network */
-    String ssid;
-    String passphrase;
-    String hostname;
-
-    /* Strip config */
-    uint16_t pixelCount;
-    bool gamma; /* Use gamma map? */
-} config_t;
 
 std::map<int, String> targets;
 

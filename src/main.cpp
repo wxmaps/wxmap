@@ -1,16 +1,21 @@
 /*
 wxmap. open for all.
 made on vacation in Seattle, WA during the 2019 snowpocalypse.
-also made at ajvpot's house after.
+also made at home after.
 */
+
+#define CONFIG_FILE "/config.json"
+#define COLOR_SATURATION 128
+
 #include <NeoPixelBus.h>
 #include "main.h"
 #include "ESP8266WiFi.h"
+#include "animationController.h"
 #include "FS.h"
+#include "config.h"
 
-#define CONFIG_FILE "/config.json"
-
-config_t config; // Current configuration
+config_t config;
+AnimationController *animCtrl;
 
 // Configuration
 
@@ -25,6 +30,19 @@ void dsConfig(JsonObject &json)
     config.passphrase = json["passphrase"].as<String>();
     config.gamma = json["gamma"];
     config.pixelCount = json["pixelCount"];
+    config.metarServer = json["metarServer"].as<String>();
+    int i = 0;
+    for (auto value : json["leds"].as<JsonArray>())
+    {
+        config.leds[i] = value.as<String>();
+        i++;
+    }
+    Serial.print("Configured airports: ");
+    for (const auto &s : config.leds){
+        Serial.print(s);
+        Serial.print(" ");
+    }
+    Serial.print("\n");
 }
 
 // Load configugration JSON file
@@ -39,7 +57,7 @@ void loadConfig()
     File file = SPIFFS.open(CONFIG_FILE, "r");
     if (!file)
     {
-        Serial.println(F("- No configuration file found."));
+        Serial.println(F("! No configuration file found."));
         char chipId[7] = {0};
         snprintf(chipId, sizeof(chipId), "%06x", ESP.getChipId());
         config.ssid = "wxmap" + String(chipId);
@@ -55,7 +73,7 @@ void loadConfig()
         size_t size = file.size();
         if (size > 2048)
         {
-            Serial.println(F("*** Configuration File too large ***"));
+            Serial.println(F("! Configuration File too large"));
             return;
         }
 
@@ -66,13 +84,13 @@ void loadConfig()
         JsonObject &json = jsonBuffer.parseObject(buf.get());
         if (!json.success())
         {
-            Serial.println(F("*** Configuration File Format Error ***"));
+            Serial.println(F("! Configuration File Format Error"));
             return;
         }
 
         dsConfig(json);
 
-        Serial.println(F("- Configuration loaded."));
+        Serial.println(F("+ Configuration loaded."));
     }
 
     // Validate it
@@ -89,9 +107,12 @@ void serializeConfig(String &jsonString, bool pretty)
     json["ssid"] = config.ssid.c_str();
     json["passphrase"] = config.passphrase.c_str();
     json["hostname"] = config.hostname.c_str();
+    json["metarServer"] = config.metarServer.c_str();
 
     json["pixelCount"] = static_cast<uint8_t>(config.pixelCount);
     json["gamma"] = config.gamma;
+
+    //ToDo: Serialize airports
 
     if (pretty)
         json.prettyPrintTo(jsonString);
@@ -110,7 +131,7 @@ void saveConfig()
     File file = SPIFFS.open(CONFIG_FILE, "w");
     if (!file)
     {
-        Serial.println(F("*** Error creating configuration file ***"));
+        Serial.println(F("!Error creating configuration file"));
         return;
     }
     else
@@ -124,22 +145,37 @@ void setup()
 {
     Serial.begin(115200);
     while (!Serial)
-        ;
+        yield();
 
-    Serial.println(F("* Open FS."));
+    Serial.println(F("+ FS"));
     if (!SPIFFS.begin())
     {
         Serial.println(F("* Format FS..."));
         SPIFFS.format();
         SPIFFS.begin();
     }
-    Serial.println(F("* Load config."));
+    Serial.println(F("+ Config"));
     loadConfig();
-    Serial.println(F("* Set hostname."));
+    Serial.println(F("+ Hostname"));
     WiFi.hostname(config.hostname);
+    //ToDo: mdns
+    Serial.println(F("+ AnimationController"));
+    animCtrl = new AnimationController(config.pixelCount, config.gamma);
+
+    // connects to access point
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(config.ssid, config.passphrase);
+    Serial.print(F(". WiFi"));
+    while (WiFi.status() != WL_CONNECTED){
+        animCtrl->update();
+        yield();
+    }
+    Serial.println(F("\r+ WiFi"));
+    animCtrl->setShouldFetch(true);
+
 }
 
 void loop()
 {
-    //TODO: animation update
+    animCtrl->update();
 }
