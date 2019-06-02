@@ -26,7 +26,7 @@ void Poller::sendRequest()
     if (request.readyState() == 0 || request.readyState() == 4)
     {
         char url[256] = {0};
-        strncat(url, config.metarServer, sizeof(url) - 1);
+        strncat(url, config.metarServer.c_str(), sizeof(url) - 1);
         int i = 0;
         for (auto airport : config.leds){
             if (airport.length())

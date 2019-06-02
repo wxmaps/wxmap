@@ -2,6 +2,9 @@
 #include "animationController.h"
 #include "animations/blink.h"
 #include "animations/ceiling.h"
+#include "animations/temperature.h"
+#include "animations/visibility.h"
+#include "animations/wind.h"
 #include "ArduinoJson.h"
 #include "poller.h"
 
@@ -83,6 +86,24 @@ Animation *AnimationController::animationFactory(int animationIndex, JsonObject 
     case 0:
     {
         return new Ceiling(cfg, strip);
+        break;
+    }
+    //temperature
+    case 1:
+    {
+        return new Temperature(cfg, strip);
+        break;
+    }
+    //visibility
+    case 2:
+    {
+        return new Visibility(cfg, strip);
+        break;
+    }
+    //wind
+    case 3:
+    {
+        return new Wind(cfg, strip);
         break;
     }
     //blink
