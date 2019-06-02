@@ -10,6 +10,7 @@ AnimationController::AnimationController(uint16_t pixelCountIn, bool gammaSettin
     wxData = new wxData_t{};
     wxData->fetched = false;
     shouldFetch = false;
+    Serial.println(F("DEBUG init poller"));
     poller = new Poller(wxData);
     Serial.println(F("AnimationController::AnimationController(...): Call"));
     gamma = gammaSetting;
@@ -19,10 +20,10 @@ AnimationController::AnimationController(uint16_t pixelCountIn, bool gammaSettin
     Serial.println(F("AnimationController::AnimationController(...): gen test config"));
     StaticJsonBuffer<200> jsonBuffer;
     JsonObject &root = jsonBuffer.createObject();
-    root["duration"] = 15;
+    root["duration"] = 1000;
 
     Serial.println(F("AnimationController::AnimationController(...): init blink"));
-    queue(new Blink(root, strip));
+    queue(new Ceiling(root, strip));
     cut();
     //currentAnimation = new Blink(root, strip);
 }
@@ -54,7 +55,10 @@ void AnimationController::update()
 
 void AnimationController::setShouldFetch(bool value)
 {
+    Serial.println(F("AnimationController::setShouldFetch(...)"));
     shouldFetch = value;
+    if (shouldFetch)
+        poller->start();
 }
 
 void AnimationController::queue(Animation *newAnimation)
