@@ -13,7 +13,7 @@ what's poppin' in my airspace? arduino map to display wx for the US
     - [ ] Wind
 - [ ] Set up Web UI for configuring
     - [ ] Mode selection interface
-    - [ ] LED/IATA mapping
+    - [x] LED/IATA mapping
 
 # Data Source
 AviationWeather.gov is an unauthenticated dataserver that is used by nearly every FAA-based API, so it will be easiest to use that.
