@@ -1,26 +1,75 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import LEDConfig from './LEDs';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            hostname: '',
+            ssid: '',
+            passphrase: '',
+            leds: [],
+            metarServer: '',
+        };
+        this.setLEDs = this.setLEDs.bind(this);
+    }
+
+    componentDidMount() {
+        fetch('/config.json')
+            .then(res => res.json())
+            .then((res) => {
+            this.setState({
+                hostname: res.hostname,
+                ssid: res.ssid,
+                passphrase: res.passphrase,
+                leds: res.leds,
+                metarServer: res.metarServer,
+            })
+            console.log("ok", this.state);
+        })
+
+    }
+
+
+    setLEDs(leds) {
+        this.setState({
+            leds,
+        })
+    }
+
+    render() {
+        const {hostname, ssid, passphrase, leds, metarServer} = this.state;
+
+        return (
+            <div className="App">
+                <header className="App-header">
+                    <p>
+                        WXMaps Configuration
+                    </p>
+                    <p>
+                        <label>Hostname</label>
+                        <input value={hostname}/>
+                    </p>
+                    <p>
+                        <label>SSID</label>
+                        <input value={ssid}/>
+                    </p>
+                    <p>
+                        <label>Passphrase</label>
+                        <input value={passphrase}/>
+                    </p>
+                    <p>
+                        <label>Metar Server</label>
+                        <input value={metarServer}/>
+                    </p>
+
+                    <LEDConfig setLEDs={this.setLEDs} leds={leds}/>
+                </header>
+            </div>
+        );
+    }
+
 }
 
 export default App;
