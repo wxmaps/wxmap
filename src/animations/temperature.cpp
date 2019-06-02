@@ -14,7 +14,8 @@ uint32_t Temperature::getDuration()
     return animationConfig.duration;
 }
 
-RgbColor getColor(uint8_t item){
+RgbColor Temperature::getColor(uint8_t item)
+{
     //Todo
     if (item == 0){
         return RgbColor(0, 0, 0);

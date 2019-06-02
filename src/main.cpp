@@ -13,11 +13,11 @@ also made at home after.
 #include "animationController.h"
 #include "FS.h"
 #include "config.h"
+#include <ESPAsyncWebServer.h>
 
 config_t config;
 AnimationController *animCtrl;
 
-// Configuration
 
 // Configuration Validations TODO
 void validateConfig() {}

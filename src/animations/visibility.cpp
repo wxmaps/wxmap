@@ -14,7 +14,8 @@ uint32_t Visibility::getDuration()
     return animationConfig.duration;
 }
 
-RgbColor getColor(uint8_t item){
+RgbColor Visibility::getColor(uint8_t item)
+{
     if (item == 0){
         return RgbColor(0, 0, 0);
     } else if (item < 1){

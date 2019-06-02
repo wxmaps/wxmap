@@ -14,7 +14,8 @@ uint32_t Wind::getDuration()
     return animationConfig.duration;
 }
 
-RgbColor getColor(uint8_t item){
+RgbColor Wind::getColor(uint8_t item)
+{
     //Todo
     if (item == 0){
         return RgbColor(0, 0, 0);
