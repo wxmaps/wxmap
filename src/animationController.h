@@ -4,6 +4,8 @@
 #include <NeoPixelBus.h>
 #include "arduinoJson.h"
 #include "animation.h"
+#include "wx.h"
+#include "poller.h"
 
 class AnimationController
 {
@@ -23,5 +25,6 @@ private:
     void PixelCountChanged(uint16_t pixelCount);
     Animation *currentAnimation;
     Animation *nextAnimation;
+    Poller *poller;
 };
 #endif

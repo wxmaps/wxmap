@@ -3,6 +3,7 @@
 #define blink_h
 #include "animationController.h"
 #include "animation.h"
+#include "wx.h"
 #include "arduinoJson.h"
 
 class Blink : public Animation

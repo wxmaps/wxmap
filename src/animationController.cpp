@@ -3,12 +3,14 @@
 #include "animations/blink.h"
 #include "animations/ceiling.h"
 #include "ArduinoJson.h"
-#include "fetchData.h"
+#include "poller.h"
 
 AnimationController::AnimationController(uint16_t pixelCountIn, bool gammaSetting)
 {
     wxData = new wxData_t{};
+    wxData->fetched = false;
     shouldFetch = false;
+    poller = new Poller(wxData);
     Serial.println(F("AnimationController::AnimationController(...): Call"));
     gamma = gammaSetting;
     Serial.println(F("AnimationController::AnimationController(...): init strip"));
@@ -53,8 +55,6 @@ void AnimationController::update()
 void AnimationController::setShouldFetch(bool value)
 {
     shouldFetch = value;
-    if (shouldFetch)
-        fetchData(wxData);
 }
 
 void AnimationController::queue(Animation *newAnimation)
@@ -75,16 +75,16 @@ Animation *AnimationController::animationFactory(int animationIndex, JsonObject 
 {
     switch (animationIndex)
     {
-    //blink
+    //ceil
     case 0:
     {
-        return new Blink(cfg, strip);
+        return new Ceiling(cfg, strip);
         break;
     }
-    //ceil
-    case 1:
+    //blink
+    case 255:
     {
-        return new Ceiling(cfg, strip);
+        return new Blink(cfg, strip);
         break;
     }
     }
