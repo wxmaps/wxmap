@@ -163,10 +163,22 @@ void setup()
     WiFi.mode(WIFI_STA);
     WiFi.begin(config.ssid, config.passphrase);
     Serial.print(F(". WiFi"));
-    while (WiFi.status() != WL_CONNECTED)
+    while (WiFi.status() != WL_CONNECTED){
+        animCtrl->update();
         yield();
+    }
     Serial.println(F("\r+ WiFi"));
     animCtrl->setShouldFetch(true);
+
+
+    // Start basic animation
+    StaticJsonBuffer<200> jsonBuffer;
+    JsonObject &root = jsonBuffer.createObject();
+    root["duration"] = 1000;
+
+    Serial.println(F("* Starting test animation"));
+    animCtrl->queue(animCtrl->animationFactory(1, root));
+    animCtrl->cut();
 }
 
 void loop()

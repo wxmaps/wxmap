@@ -17,10 +17,10 @@ AnimationController::AnimationController(uint16_t pixelCountIn, bool gammaSettin
     Serial.println(F("AnimationController::AnimationController(...): gen test config"));
     StaticJsonBuffer<200> jsonBuffer;
     JsonObject &root = jsonBuffer.createObject();
-    root["duration"] = 1000;
+    root["duration"] = 15;
 
     Serial.println(F("AnimationController::AnimationController(...): init blink"));
-    queue(new Ceiling(root, strip));
+    queue(new Blink(root, strip));
     cut();
     //currentAnimation = new Blink(root, strip);
 }
