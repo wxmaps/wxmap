@@ -11,9 +11,11 @@ class App extends React.Component {
             passphrase: '',
             leds: [],
             metarServer: '',
+            message: '',
         };
         this.setLEDs = this.setLEDs.bind(this);
         this.editParam = this.editParam.bind(this);
+        this.postConfig = this.postConfig.bind(this);
     }
 
     componentDidMount() {
@@ -42,17 +44,27 @@ class App extends React.Component {
         this.setState({
             [evt.target.name]: evt.target.value,
         })
+    }
 
+    postConfig() {
+        fetch('/config.json', {method: 'POST', body: JSON.stringify(this.state)})
+            .then(res => res.json())
+            .then(res => {this.setState({message: 'POST successful'})})
+            .catch(err => {
+                this.setState({message: 'Error POSTing to device'})
+            })
     }
 
     render() {
-        const {hostname, ssid, passphrase, leds, metarServer} = this.state;
+        const {hostname, ssid, passphrase, leds, metarServer, message} = this.state;
 
         return (
             <div className="App">
                 <header className="App-header">
                     <p>
                         WXMaps Configuration
+                        <br/>
+                        {message}
                     </p>
                     <p>
                         <label>Hostname</label>
@@ -72,6 +84,7 @@ class App extends React.Component {
                     </p>
 
                     <LEDConfig setLEDs={this.setLEDs} leds={leds}/>
+                    <button onClick={this.postConfig}>Save</button>
                 </header>
             </div>
         );
