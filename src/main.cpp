@@ -12,8 +12,9 @@ also made at home after.
 #include "ESP8266WiFi.h"
 #include "animationController.h"
 #include "FS.h"
+#include "config.h"
 
-config_t config; // Current configuration
+config_t config;
 AnimationController *animCtrl;
 
 // Configuration
