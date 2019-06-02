@@ -8,6 +8,7 @@ class LEDConfig extends React.Component {
             leds: [],
         };
         this.deleteRow = this.deleteRow.bind(this);
+        this.editLED = this.editLED.bind(this);
     }
 
     componentDidMount() {
@@ -28,6 +29,12 @@ class LEDConfig extends React.Component {
         this.props.setLEDs(array);
     }
 
+    editLED(evt) {
+        let array = [...this.state.leds];
+        array[evt.target.id] = evt.target.value;
+        this.props.setLEDs(array);
+    }
+
     render() {
         const {leds} = this.state;
 
@@ -45,7 +52,7 @@ class LEDConfig extends React.Component {
                 {leds.map((led, i) => (
                         <tr key={i}>
                             <td>{i}</td>
-                            <td>{led}</td>
+                            <td><input type="text" value={led} id={i} onChange={this.editLED} /></td>
                             <td>
                                 <button type="button" id={i} onClick={this.deleteRow}>X</button>
                             </td>

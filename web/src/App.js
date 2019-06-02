@@ -13,6 +13,7 @@ class App extends React.Component {
             metarServer: '',
         };
         this.setLEDs = this.setLEDs.bind(this);
+        this.editParam = this.editParam.bind(this);
     }
 
     componentDidMount() {
@@ -26,7 +27,6 @@ class App extends React.Component {
                     leds: res.leds,
                     metarServer: res.metarServer,
                 });
-                console.log("ok", this.state);
             })
 
     }
@@ -36,6 +36,13 @@ class App extends React.Component {
         this.setState({
             leds,
         })
+    }
+
+    editParam(evt) {
+        this.setState({
+            [evt.target.name]: evt.target.value,
+        })
+
     }
 
     render() {
@@ -49,19 +56,19 @@ class App extends React.Component {
                     </p>
                     <p>
                         <label>Hostname</label>
-                        <input value={hostname}/>
+                        <input value={hostname} onChange={this.editParam} name="hostname" />
                     </p>
                     <p>
                         <label>SSID</label>
-                        <input value={ssid}/>
+                        <input value={ssid} onChange={this.editParam} name="ssid"/>
                     </p>
                     <p>
                         <label>Passphrase</label>
-                        <input value={passphrase}/>
+                        <input value={passphrase} onChange={this.editParam} name="passphrase"/>
                     </p>
                     <p>
                         <label>Metar Server</label>
-                        <input value={metarServer}/>
+                        <input value={metarServer} onChange={this.editParam} name="metarServer"/>
                     </p>
 
                     <LEDConfig setLEDs={this.setLEDs} leds={leds}/>
