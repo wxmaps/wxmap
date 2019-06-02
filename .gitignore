@@ -8,3 +8,4 @@
 data/
 .idea/
 web/build/
+config.json
