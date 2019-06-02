@@ -1,3 +1,4 @@
+
 import React from 'react';
 import './App.css';
 import LEDConfig from './LEDs';
@@ -11,29 +12,35 @@ class App extends React.Component {
             passphrase: '',
             leds: [],
             metarServer: '',
-            mode: '',
+            mode: {},
             message: '',
         };
         this.setLEDs = this.setLEDs.bind(this);
         this.editParam = this.editParam.bind(this);
         this.postConfig = this.postConfig.bind(this);
+        this.editModeOptions = this.editModeOptions(this);
     }
 
     componentDidMount() {
-        fetch('/config.json')
-            .then(res => res.json())
-            .then((res) => {
-                this.setState({
-                    hostname: res.hostname,
-                    ssid: res.ssid,
-                    passphrase: res.passphrase,
-                    leds: res.leds,
-                    metarServer: res.metarServer,
-                    mode: res.mode,
-                });
+        Promise.all([fetch('/config.json'), fetch('/mode.json')])
+            .then(res => {
+                Promise.all(res.map(resp => resp.json()))
+                    .then(res => {
+                        console.log(res);
+                        this.setState({
+                            hostname: res[0].hostname,
+                            ssid: res[0].ssid,
+                            passphrase: res[0].passphrase,
+                            leds: res[0].leds,
+                            metarServer: res[0].metarServer,
+                            mode: res[1],
+                        })
             })
-
+        })
     }
+
+
+
 
 
     setLEDs(leds) {
@@ -48,7 +55,16 @@ class App extends React.Component {
         })
     }
 
+    editModeOptions(evt) {
+        if(evt.target !== undefined) {
+            let array = {...this.state.mode};
+
+        }
+    }
+
     postConfig() {
+
+
         fetch('/config.json', {method: 'POST', body: JSON.stringify(this.state)})
             .then(res => res.json())
             .then(res => {this.setState({message: 'POST successful'})})
@@ -85,8 +101,21 @@ class App extends React.Component {
                         <input value={metarServer} onChange={this.editParam} name="metarServer"/>
                     </p>
                     <p>
-                        <label>Data Type</label>
-                        <input value={mode} type="number" onChange={this.editParam} name="mode"/>
+                        {mode.config === undefined ? (
+                            <React.Fragment>
+                                <label>Loading...</label>
+                            </React.Fragment>
+                            ) : (
+                            <React.Fragment>
+                                <label>Data Type</label>
+                                <input value={mode.id} type="number" onChange={this.editParam} name="mode"/>
+                                <br />
+                                <label>Duration</label>
+                                <input value={mode.config.duration} type="number" onChange={this.editModeOptions} name="duration"/>
+                            </React.Fragment>
+                        )}
+
+
                     </p>
 
                     <LEDConfig setLEDs={this.setLEDs} leds={leds}/>
