@@ -47,7 +47,7 @@ void AnimationController::PixelCountChanged(uint16_t pixelCount)
     strip->Begin();
     strip->ClearTo(1);
     strip->Show();
-    delay(100);
+    delay(1000);
 }
 
 void AnimationController::update()

@@ -1,6 +1,4 @@
-cd web
-npm run build
-cd ..
+(cd web; npm run build)
 rm -r data
 mkdir data
 cp -r web/build/* data/
