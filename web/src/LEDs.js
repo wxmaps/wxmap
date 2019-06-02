@@ -7,6 +7,7 @@ class LEDConfig extends React.Component {
         this.state = {
             leds: [],
         };
+        this.addRow = this.addRow.bind(this);
         this.deleteRow = this.deleteRow.bind(this);
         this.editLED = this.editLED.bind(this);
     }
@@ -21,6 +22,12 @@ class LEDConfig extends React.Component {
         this.setState({
             leds: nextProps.leds,
         })
+    }
+
+    addRow(evt) {
+        let array = [...this.state.leds];
+        array.push('KMPO');
+        this.props.setLEDs(array);
     }
 
     deleteRow(evt) {
@@ -44,7 +51,7 @@ class LEDConfig extends React.Component {
                 <tr>
                     <th>#</th>
                     <th>Code</th>
-                    <th>Delete</th>
+                    <th><button type="button" onClick={this.addRow}>+</button></th>
                 </tr>
                 </thead>
 
