@@ -177,7 +177,7 @@ void setup()
         animCtrl->update();
         yield();
     }
-    Serial.println(F("\r+ WiFi"));
+    Serial.printf("\r+ WiFi\ni IP: %s\ni DNS: %s\ni GW: %s\n", WiFi.localIP().toString().c_str(), WiFi.dnsIP().toString().c_str(), WiFi.gatewayIP().toString().c_str());
     animCtrl->setShouldFetch(true);
     Serial.println(F("+ Fetch METAR"));
 
