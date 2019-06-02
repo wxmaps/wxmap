@@ -6,9 +6,14 @@ what's poppin' in my airspace? arduino map to display wx for the US
 - [x] In firmware, pull config.json to map to LEDs
 - [x] Pull + store METAR every 5mins for all configured
 - [x] Implement single display mode
-- [ ] Extend display modes for all attributes (Sky Condition, Temperature, Wind, Vis, Ceiling)
-- [ ] Mode selection interface (encoder, web ui as well?)
-- [ ] Set up Web UI for configuring LED/IATA mapping
+- [ ] Extend display modes for all attributes w/ mapping
+    - [x] Ceiling
+    - [x] Visibility
+    - [ ] Temperature
+    - [ ] Wind
+- [ ] Set up Web UI for configuring
+    - [ ] Mode selection interface
+    - [ ] LED/IATA mapping
 
 # Data Source
 AviationWeather.gov is an unauthenticated dataserver that is used by nearly every FAA-based API, so it will be easiest to use that.

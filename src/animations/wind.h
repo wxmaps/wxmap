@@ -1,15 +1,15 @@
 //asdf
-#ifndef ceiling_h
-#define ceiling_h
+#ifndef wind_h
+#define wind_h
 #include "animationController.h"
 #include "animation.h"
 #include "wx.h"
 #include "arduinoJson.h"
 
-class Ceiling : public Animation
+class Wind : public Animation
 {
 public:
-    Ceiling(JsonObject &config, NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> *strip);
+    Wind(JsonObject &config, NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> *strip);
 
 private:
     // Sets the config

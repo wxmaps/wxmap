@@ -1,15 +1,15 @@
 #include "animationController.h"
 #include "animation.h"
 #include <ArduinoJson.h>
-#include "ceiling.h"
+#include "visibility.h"
 
-Ceiling::Ceiling(JsonObject &config, NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> *stripRef)
+Visibility::Visibility(JsonObject &config, NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> *stripRef)
 {
     animationConfig.duration = config["duration"].as<uint32_t>();
     strip = stripRef;
 }
 
-uint32_t Ceiling::getDuration()
+uint32_t Visibility::getDuration()
 {
     return animationConfig.duration;
 }
@@ -17,21 +17,21 @@ uint32_t Ceiling::getDuration()
 RgbColor getColor(uint8_t item){
     if (item == 0){
         return RgbColor(0, 0, 0);
-    } else if (item < 5){
+    } else if (item < 1){
         return RgbColor(255, 0, 255);
-    } else if (item <= 10){
+    } else if (item <= 3){
         return RgbColor(255, 0, 0);
-    } else if (item <= 30){
+    } else if (item <= 5){
         return RgbColor(0, 0, 255);
     }
     return RgbColor(0, 255, 0);
 }
 
-void Ceiling::render(wxData_t *data, float_t progress)
+void Visibility::render(wxData_t *data, float_t progress)
 {
     int frame = 0;
     int i = 0;
-    for (auto s : data->Ceiling)
+    for (auto s : data->Visibility)
     {
         strip->SetPixelColor(i, getColor(s[frame]));
         i++;
