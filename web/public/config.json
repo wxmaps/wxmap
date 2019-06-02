@@ -4,6 +4,7 @@
   "passphrase": "TooStupid",
   "gamma": false,
   "pixelCount": 40,
-  "leds": ["KPVD", "KBOS"],
+  "leds": ["KSEA","KPHX","KSFO","KLAX","KSLC","KLAS","KPHX","KDEN","KDFW","KIAH","KMIA","KATL","KCLT","KORD","KMSP","KDTW","KIAD","KEWR","KPVD","KBOS"],
   "metarServer": "http://10.10.10.237:8000/wx/"
 }
+

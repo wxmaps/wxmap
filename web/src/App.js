@@ -19,15 +19,15 @@ class App extends React.Component {
         fetch('/config.json')
             .then(res => res.json())
             .then((res) => {
-            this.setState({
-                hostname: res.hostname,
-                ssid: res.ssid,
-                passphrase: res.passphrase,
-                leds: res.leds,
-                metarServer: res.metarServer,
+                this.setState({
+                    hostname: res.hostname,
+                    ssid: res.ssid,
+                    passphrase: res.passphrase,
+                    leds: res.leds,
+                    metarServer: res.metarServer,
+                });
+                console.log("ok", this.state);
             })
-            console.log("ok", this.state);
-        })
 
     }
 
@@ -69,7 +69,6 @@ class App extends React.Component {
             </div>
         );
     }
-
 }
 
 export default App;
