@@ -13,6 +13,7 @@ public:
     AnimationController(uint16_t pixelCount, bool gamma);
     void update();
     void cut();
+    void reloadData();
     void queue(Animation *newAnimation);
     void setShouldFetch(bool value);
     Animation *animationFactory(int animationIndex, JsonObject &cfg);

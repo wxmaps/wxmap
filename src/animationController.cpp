@@ -56,6 +56,12 @@ void AnimationController::update()
     currentAnimation->render(wxData, animProg);
 }
 
+void AnimationController::reloadData()
+{
+    memset(&wxData, 0, sizeof(wxData));
+    poller->sendRequest();
+}
+
 void AnimationController::setShouldFetch(bool value)
 {
     Serial.println(F("AnimationController::setShouldFetch(...)"));

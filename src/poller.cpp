@@ -71,5 +71,6 @@ void Poller::requestCB(void *optParm, asyncHTTPrequest *request, int readyState)
             }
             airportIdx++;
         }
+        _dataPointer->fetched = true;
     }
 }

@@ -12,11 +12,11 @@ class Poller
     public:
         Poller(wxData_t *dataPointer);
         void start();
+        void sendRequest();
     private:
         asyncHTTPrequest request;
         Ticker ticker;
         void requestCB(void *optParm, asyncHTTPrequest *request, int readyState);
-        void sendRequest();
         wxData_t *_dataPointer;
 };
 

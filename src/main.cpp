@@ -187,6 +187,7 @@ void setup()
         JsonObject &jsonObj = json.as<JsonObject>();
         dsConfig(jsonObj);
         saveConfig();
+        animCtrl->reloadData();
     });
     server.addHandler(handler);
 
