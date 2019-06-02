@@ -25,5 +25,7 @@ private:
 
     uint32_t getDuration();
     void render(wxData_t *data, float_t progress);
+    RgbColor getColor(uint8_t item);
 };
+
 #endif

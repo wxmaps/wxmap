@@ -13,11 +13,13 @@ also made at home after.
 #include "animationController.h"
 #include "FS.h"
 #include "config.h"
+#include <ESPAsyncWebServer.h>
+#include <ESPAsyncTCP.h>
+#include <AsyncJson.h>
 
 config_t config;
 AnimationController *animCtrl;
-
-// Configuration
+AsyncWebServer server(80);
 
 // Configuration Validations TODO
 void validateConfig() {}
@@ -141,6 +143,11 @@ void saveConfig()
     }
 }
 
+void notFound(AsyncWebServerRequest *request)
+{
+    request->send(404, "text/plain", "Not found");
+}
+
 void setup()
 {
     Serial.begin(115200);
@@ -170,9 +177,22 @@ void setup()
         animCtrl->update();
         yield();
     }
-    Serial.println(F("\r+ WiFi"));
+    Serial.printf("\r+ WiFi\ni IP: %s\ni DNS: %s\ni GW: %s\n", WiFi.localIP().toString().c_str(), WiFi.dnsIP().toString().c_str(), WiFi.gatewayIP().toString().c_str());
     animCtrl->setShouldFetch(true);
+    Serial.println(F("+ Fetch METAR"));
 
+    server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
+
+    AsyncCallbackJsonWebHandler *handler = new AsyncCallbackJsonWebHandler("/config.json", [](AsyncWebServerRequest *request, JsonVariant &json) {
+        JsonObject &jsonObj = json.as<JsonObject>();
+        dsConfig(jsonObj);
+        saveConfig();
+    });
+    server.addHandler(handler);
+
+    server.onNotFound(notFound);
+
+    server.begin();
 }
 
 void loop()
