@@ -65,7 +65,9 @@ class App extends React.Component {
     postConfig() {
 
 
-        fetch('/config.json', {method: 'POST', body: JSON.stringify(this.state)})
+        fetch('/config.json', {method: 'POST', body: JSON.stringify(this.state), headers: {
+            'Content-Type': 'application/json'
+        }})
             .then(res => res.json())
             .then(res => {this.setState({message: 'POST successful'})})
             .catch(err => {
