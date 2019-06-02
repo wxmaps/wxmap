@@ -142,7 +142,7 @@ void setup()
 {
     Serial.begin(115200);
     while (!Serial)
-        ;
+        yield();
 
     Serial.println(F("+ FS"));
     if (!SPIFFS.begin())
@@ -155,8 +155,18 @@ void setup()
     loadConfig();
     Serial.println(F("+ Hostname"));
     WiFi.hostname(config.hostname);
+    //ToDo: mdns
     Serial.println(F("+ AnimationController"));
     animCtrl = new AnimationController(config.pixelCount, config.gamma);
+
+    // connects to access point
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(config.ssid, config.passphrase);
+    Serial.print(F(". WiFi"));
+    while (WiFi.status() != WL_CONNECTED)
+        yield();
+    Serial.println(F("\r+ WiFi"));
+    animCtrl->setShouldFetch(true);
 }
 
 void loop()

@@ -5,11 +5,11 @@
 /* Data structure */
 typedef struct
 {
-    std::array<uint8_t, 40> Ceiling;
-    std::array<uint8_t, 40> Visibility;
-    std::array<uint8_t, 40> Wind;
-    std::array<uint8_t, 40> Temperature;
-    std::array<uint8_t, 40> Sky;
+    std::array<std::array<uint8_t, 10>, 40> Ceiling;
+    std::array<std::array<uint8_t, 10>, 40> Visibility;
+    std::array<std::array<uint8_t, 10>, 40> Wind;
+    std::array<std::array<uint8_t, 10>, 40> Temperature;
+    std::array<std::array<uint8_t, 10>, 40> Sky;
 } wxData_t;
 
 class Animation
