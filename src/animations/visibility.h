@@ -1,15 +1,15 @@
 //asdf
-#ifndef ceiling_h
-#define ceiling_h
+#ifndef visibility_h
+#define visibility_h
 #include "animationController.h"
 #include "animation.h"
 #include "wx.h"
 #include "arduinoJson.h"
 
-class Ceiling : public Animation
+class Visibility : public Animation
 {
 public:
-    Ceiling(JsonObject &config, NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> *strip);
+    Visibility(JsonObject &config, NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> *strip);
 
 private:
     // Sets the config

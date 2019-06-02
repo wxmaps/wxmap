@@ -1,15 +1,15 @@
 //asdf
-#ifndef ceiling_h
-#define ceiling_h
+#ifndef temperature_h
+#define temperature_h
 #include "animationController.h"
 #include "animation.h"
 #include "wx.h"
 #include "arduinoJson.h"
 
-class Ceiling : public Animation
+class Temperature : public Animation
 {
 public:
-    Ceiling(JsonObject &config, NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> *strip);
+    Temperature(JsonObject &config, NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> *strip);
 
 private:
     // Sets the config
