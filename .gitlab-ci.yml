@@ -1,0 +1,45 @@
+# Using the node alpine image to build the React app
+image: node:stretch
+
+variables:
+  PUBLIC_URL: /
+# Cache node modules - speeds up future builds
+
+
+# Name the stages involved in the pipeline
+stages:
+- prepare
+- build
+- buildfw
+
+# Job name for gitlab to recognise this results in assets for Gitlab Pages
+# https://docs.gitlab.com/ee/user/project/pages/introduction.html#gitlab-pages-requirements
+web:
+  stage: build
+  script:
+    - cd web
+    - npm install # Install all dependencies
+    - npm run build # Build for prod
+  artifacts:
+    paths:
+    - web/build # The built files for Gitlab Pages to serve
+  cache:
+    paths:
+      - web/node_modules
+
+firmware:
+  image: python:2.7
+  stage: buildfw
+  script:
+    - pip --cache-dir=.pip install -U platformio
+    - platformio lib update
+    - platformio ci --board=esp12e $PLATFORMIO_CI_SRC
+  variables:
+    PLATFORMIO_CI_SRC: "src/"
+  dependencies:
+    - web
+  cache:
+    paths:
+      - .pioenvs
+      - .piolibdeps
+      - .pip
