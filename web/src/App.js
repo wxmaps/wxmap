@@ -11,6 +11,7 @@ class App extends React.Component {
             passphrase: '',
             leds: [],
             metarServer: '',
+            mode: '',
             message: '',
         };
         this.setLEDs = this.setLEDs.bind(this);
@@ -28,6 +29,7 @@ class App extends React.Component {
                     passphrase: res.passphrase,
                     leds: res.leds,
                     metarServer: res.metarServer,
+                    mode: res.mode,
                 });
             })
 
@@ -56,7 +58,7 @@ class App extends React.Component {
     }
 
     render() {
-        const {hostname, ssid, passphrase, leds, metarServer, message} = this.state;
+        const {hostname, ssid, passphrase, leds, metarServer, message, mode} = this.state;
 
         return (
             <div className="App">
@@ -81,6 +83,10 @@ class App extends React.Component {
                     <p>
                         <label>Metar Server</label>
                         <input value={metarServer} onChange={this.editParam} name="metarServer"/>
+                    </p>
+                    <p>
+                        <label>Data Type</label>
+                        <input value={mode} type="number" onChange={this.editParam} name="mode"/>
                     </p>
 
                     <LEDConfig setLEDs={this.setLEDs} leds={leds}/>
