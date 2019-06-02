@@ -197,5 +197,5 @@ void setup()
 
 void loop()
 {
-    animCtrl->update();
+    animCtrl->update(); 
 }
