@@ -18,7 +18,7 @@ class App extends React.Component {
         this.setLEDs = this.setLEDs.bind(this);
         this.editParam = this.editParam.bind(this);
         this.postConfig = this.postConfig.bind(this);
-        this.editModeOptions = this.editModeOptions(this);
+        this.editModeOptions = this.editModeOptions.bind(this);
     }
 
     componentDidMount() {
@@ -35,13 +35,9 @@ class App extends React.Component {
                             metarServer: res[0].metarServer,
                             mode: res[1],
                         })
+                    })
             })
-        })
     }
-
-
-
-
 
     setLEDs(leds) {
         this.setState({
@@ -57,27 +53,42 @@ class App extends React.Component {
 
     editModeOptions(evt) {
         if(evt.target !== undefined) {
-            let array = {...this.state.mode};
+            let mode = {...this.state.mode};
+            if(evt.target.name === 'duration') {
+                mode['config'].duration = evt.target.value;
+
+            } else if(evt.target.name === 'modeId') {
+                mode.id = evt.target.value;
+            }
+            this.setState({
+                mode
+            })
 
         }
     }
 
     postConfig() {
-
-
         fetch('/config.json', {method: 'POST', body: JSON.stringify(this.state), headers: {
-            'Content-Type': 'application/json'
-        }})
+                'Content-Type': 'application/json'
+            }})
             .then(res => res.json())
             .then(res => {this.setState({message: 'POST successful'})})
             .catch(err => {
                 this.setState({message: 'Error POSTing to device'})
-            })
+            });
+        fetch('/mode.json', {method: 'POST', body: JSON.stringify(this.state.mode), headers: {
+                'Content-Type': 'application/json'
+            }})
+            .then(res => res.json())
+            .then(res => {this.setState({message: 'POST successful'})})
+            .catch(err => {
+                this.setState({message: 'Error POSTing to device'})
+            });
     }
 
     render() {
         const {hostname, ssid, passphrase, leds, metarServer, message, mode} = this.state;
-
+        console.log(mode);
         return (
             <div className="App">
                 <header className="App-header">
@@ -103,21 +114,20 @@ class App extends React.Component {
                         <input value={metarServer} onChange={this.editParam} name="metarServer"/>
                     </p>
                     <p>
+
                         {mode.config === undefined ? (
                             <React.Fragment>
                                 <label>Loading...</label>
                             </React.Fragment>
-                            ) : (
+                        ) : (
                             <React.Fragment>
                                 <label>Data Type</label>
-                                <input value={mode.id} type="number" onChange={this.editParam} name="mode"/>
+                                <input value={mode.id} type="number" onChange={this.editModeOptions} name="modeId"/>
                                 <br />
                                 <label>Duration</label>
-                                <input value={mode.config.duration} type="number" onChange={this.editModeOptions} name="duration"/>
+                                <input value={mode['config'].duration} type="number" onChange={this.editModeOptions} name="duration"/>
                             </React.Fragment>
                         )}
-
-
                     </p>
 
                     <LEDConfig setLEDs={this.setLEDs} leds={leds}/>
