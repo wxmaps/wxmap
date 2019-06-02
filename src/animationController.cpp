@@ -11,7 +11,6 @@
 AnimationController::AnimationController(uint16_t pixelCountIn, bool gammaSetting)
 {
     wxData = new wxData_t{};
-    wxData->fetched = false;
     shouldFetch = false;
     Serial.println(F("DEBUG init poller"));
     poller = new Poller(wxData);
@@ -58,7 +57,7 @@ void AnimationController::update()
 
 void AnimationController::reloadData()
 {
-    memset(&wxData, 0, sizeof(wxData));
+    wxData = new wxData_t{};
     poller->sendRequest();
 }
 

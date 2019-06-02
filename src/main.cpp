@@ -30,8 +30,8 @@ void dsConfig(JsonObject &json)
     config.hostname = json["hostname"].as<String>();
     config.ssid = json["ssid"].as<String>();
     config.passphrase = json["passphrase"].as<String>();
-    config.gamma = json["gamma"];
-    config.pixelCount = json["pixelCount"];
+    config.gamma = false; //ToDo: remove
+    config.pixelCount = 40; //ToDo: remove
     config.metarServer = json["metarServer"].as<String>();
     int i = 0;
     for (auto value : json["leds"].as<JsonArray>())
@@ -114,7 +114,11 @@ void serializeConfig(String &jsonString, bool pretty)
     json["pixelCount"] = static_cast<uint8_t>(config.pixelCount);
     json["gamma"] = config.gamma;
 
-    //ToDo: Serialize airports
+    JsonArray &leds = jsonBuffer.createArray();
+    for (auto airport : config.leds){
+        leds.add(airport);
+    }
+    json["leds"] = leds;
 
     if (pretty)
         json.prettyPrintTo(jsonString);
