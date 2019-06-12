@@ -25,7 +25,7 @@ AnimationController::AnimationController(uint16_t pixelCountIn, bool gammaSettin
     root["duration"] = 1000;
 
     Serial.println(F("AnimationController::AnimationController(...): init blink"));
-    queue(new Ceiling(root, strip));
+    queue(0, root);
     cut();
     //currentAnimation = new Blink(root, strip);
 }
@@ -69,10 +69,10 @@ void AnimationController::setShouldFetch(bool value)
         poller->start();
 }
 
-void AnimationController::queue(Animation *newAnimation)
+void AnimationController::queue(int animationIndex, JsonObject &cfg)
 {
     Serial.println(F("AnimationController::queue(...)"));
-    nextAnimation = newAnimation;
+    nextAnimation = animationFactory(animationIndex, cfg);
 }
 
 void AnimationController::cut()

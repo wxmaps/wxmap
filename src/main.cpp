@@ -187,13 +187,22 @@ void setup()
 
     server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
 
-    AsyncCallbackJsonWebHandler *handler = new AsyncCallbackJsonWebHandler("/config.json", [](AsyncWebServerRequest *request, JsonVariant &json) {
+    server.addHandler(new AsyncCallbackJsonWebHandler("/config.json", [](AsyncWebServerRequest *request, JsonVariant &json) {
         JsonObject &jsonObj = json.as<JsonObject>();
         dsConfig(jsonObj);
         saveConfig();
         animCtrl->reloadData();
-    });
-    server.addHandler(handler);
+
+        request->send(200, "text/plain", "{\"success\": true}");
+    }));
+    server.addHandler(new AsyncCallbackJsonWebHandler("/mode.json", [](AsyncWebServerRequest *request, JsonVariant &json) {
+        JsonObject &jsonObj = json.as<JsonObject>();
+        auto id = jsonObj["id"].as<int>();
+        animCtrl->queue(id, jsonObj["cfg"]);
+        animCtrl->cut();
+
+        request->send(200, "text/plain", "{\"success\": true}");
+    }));
 
     server.onNotFound(notFound);
 

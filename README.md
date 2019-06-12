@@ -11,8 +11,8 @@ what's poppin' in my airspace? arduino map to display wx for the US
     - [x] Visibility
     - [ ] Temperature
     - [ ] Wind
-- [ ] Set up Web UI for configuring
-    - [ ] Mode selection interface
+- [ ] Set up Web UI
+    - [x] Mode selection
     - [x] LED/IATA mapping
 
 # Data Source

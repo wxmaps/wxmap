@@ -14,7 +14,7 @@ public:
     void update();
     void cut();
     void reloadData();
-    void queue(Animation *newAnimation);
+    void queue(int animationIndex, JsonObject &cfg);
     void setShouldFetch(bool value);
     Animation *animationFactory(int animationIndex, JsonObject &cfg);
 
