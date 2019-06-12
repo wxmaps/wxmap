@@ -24,6 +24,7 @@ private:
     NeoPixelBus<NeoGrbFeature, Neo800KbpsMethod> *strip = NULL;
     wxData_t *wxData = NULL;
     void PixelCountChanged(uint16_t pixelCount);
+    DynamicJsonBuffer cfgBuf;
     Animation *currentAnimation;
     Animation *nextAnimation;
     Poller *poller;

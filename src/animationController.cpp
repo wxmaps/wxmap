@@ -8,6 +8,38 @@
 #include "ArduinoJson.h"
 #include "poller.h"
 
+JsonVariant clone(JsonBuffer &jb, JsonVariant prototype)
+{
+    if (prototype.is<JsonObject>())
+    {
+        const JsonObject &protoObj = prototype;
+        JsonObject &newObj = jb.createObject();
+        for (const auto &kvp : protoObj)
+        {
+            newObj[jb.strdup(kvp.key)] = clone(jb, kvp.value);
+        }
+        return newObj;
+    }
+
+    if (prototype.is<JsonArray>())
+    {
+        const JsonArray &protoArr = prototype;
+        JsonArray &newArr = jb.createArray();
+        for (const auto &elem : protoArr)
+        {
+            newArr.add(clone(jb, elem));
+        }
+        return newArr;
+    }
+
+    if (prototype.is<char *>())
+    {
+        return jb.strdup(prototype.as<const char *>());
+    }
+
+    return prototype;
+}
+
 AnimationController::AnimationController(uint16_t pixelCountIn, bool gammaSetting)
 {
     wxData = new wxData_t{};
@@ -85,36 +117,37 @@ void AnimationController::cut()
 
 Animation *AnimationController::animationFactory(int animationIndex, JsonObject &cfg)
 {
+    auto safeCfg = clone(cfgBuf, cfg);
     switch (animationIndex)
     {
     //ceil
     case 0:
     {
-        return new Ceiling(cfg, strip);
+        return new Ceiling(safeCfg, strip);
         break;
     }
     //temperature
     case 1:
     {
-        return new Temperature(cfg, strip);
+        return new Temperature(safeCfg, strip);
         break;
     }
     //visibility
     case 2:
     {
-        return new Visibility(cfg, strip);
+        return new Visibility(safeCfg, strip);
         break;
     }
     //wind
     case 3:
     {
-        return new Wind(cfg, strip);
+        return new Wind(safeCfg, strip);
         break;
     }
     //blink
     case 255:
     {
-        return new Blink(cfg, strip);
+        return new Blink(safeCfg, strip);
         break;
     }
     }
