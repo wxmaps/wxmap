@@ -1,7 +1,23 @@
 
 import React from 'react';
-import './App.css';
+import { withStyles } from '@material-ui/core/styles';
 import LEDConfig from './LEDs';
+import AppBar from '@material-ui/core/AppBar';
+import Container from '@material-ui/core/Container';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+
+const classes = {
+    root: {
+        flexGrow: 1,
+    },
+    paper: {
+        paddingBottom: 50,
+    },
+};
 
 class App extends React.Component {
     constructor(props) {
@@ -88,54 +104,43 @@ class App extends React.Component {
 
     render() {
         const {hostname, ssid, passphrase, leds, metarServer, message, mode} = this.state;
-        console.log(mode);
         return (
-            <div className="App">
-                <header className="App-header">
-                    <p>
-                        WXMaps Configuration
-                        <br/>
-                        {message}
-                    </p>
-                    <p>
-                        <label>Hostname</label>
-                        <input value={hostname} onChange={this.editParam} name="hostname" />
-                    </p>
-                    <p>
-                        <label>SSID</label>
-                        <input value={ssid} onChange={this.editParam} name="ssid"/>
-                    </p>
-                    <p>
-                        <label>Passphrase</label>
-                        <input value={passphrase} onChange={this.editParam} name="passphrase"/>
-                    </p>
-                    <p>
-                        <label>Metar Server</label>
-                        <input value={metarServer} onChange={this.editParam} name="metarServer"/>
-                    </p>
-                    <p>
+            <Container className={classes.root}>
+                <CssBaseline />
+                    <AppBar position="static" color="primary">
+                        <p>
+                            WXMaps Configuration
+                            <br/>
+                            {message}
+                        </p>
+                        <Paper className={classes.paper}>
+                            <TextField value={hostname} label="Hostname" onChange={this.editParam} name="hostname" />
+                            <TextField value={ssid} label="SSID" onChange={this.editParam} name="ssid"/>
+                            <TextField value={passphrase} label="Passphrase" onChange={this.editParam} name="passphrase"/>
+                            <TextField value={metarServer} label="METAR Server" onChange={this.editParam} name="metarServer"/>
+                            {mode.config === undefined ? (
+                                <React.Fragment>
+                                    <CircularProgress />
+                                </React.Fragment>
+                            ) : (
+                                <React.Fragment>
+                                    <TextField value={mode.id} label="Mode ID" type="number" onChange={this.editModeOptions} name="modeId"/>
+                                    <br />
+                                    <TextField value={mode['config'].duration} label="Duration" type="number" onChange={this.editModeOptions} name="duration"/>
+                                </React.Fragment>
+                            )}
+                        </Paper>
 
-                        {mode.config === undefined ? (
-                            <React.Fragment>
-                                <label>Loading...</label>
-                            </React.Fragment>
-                        ) : (
-                            <React.Fragment>
-                                <label>Data Type</label>
-                                <input value={mode.id} type="number" onChange={this.editModeOptions} name="modeId"/>
-                                <br />
-                                <label>Duration</label>
-                                <input value={mode['config'].duration} type="number" onChange={this.editModeOptions} name="duration"/>
-                            </React.Fragment>
-                        )}
-                    </p>
+                        <Paper className={classes.paper}>
+                            <LEDConfig setLEDs={this.setLEDs} leds={leds}/>
 
-                    <LEDConfig setLEDs={this.setLEDs} leds={leds}/>
-                    <button onClick={this.postConfig}>Save</button>
-                </header>
-            </div>
+
+                        </Paper>
+                        <Button onClick={this.postConfig}>Save</Button>
+                    </AppBar>
+            </Container>
         );
     }
 }
 
-export default App;
+export default withStyles(classes)(App);

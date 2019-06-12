@@ -1,5 +1,7 @@
 import React from 'react';
 import './App.css';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 class LEDConfig extends React.Component {
     constructor(props) {
@@ -59,9 +61,9 @@ class LEDConfig extends React.Component {
                 {leds.map((led, i) => (
                         <tr key={i}>
                             <td>{i}</td>
-                            <td><input type="text" value={led} id={i} onChange={this.editLED} /></td>
+                            <td><TextField type="text" value={led} id={i} onChange={this.editLED} /></td>
                             <td>
-                                <button type="button" id={i} onClick={this.deleteRow}>X</button>
+                                <Button type="button" id={i} onClick={this.deleteRow}>X</Button>
                             </td>
                         </tr>
                     )
